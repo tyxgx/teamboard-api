@@ -1,0 +1,48 @@
+// prisma/schema.prisma
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "./node_modules/@prisma/client"
+}
+
+model User {
+  id       String   @id @default(uuid())
+  name     String
+  email    String   @unique
+  password String
+  role     Role
+  comments Comment[]
+}
+
+model Board {
+  id       String    @id @default(uuid())
+  name     String
+  adminId  String
+  comments Comment[]
+}
+
+model Comment {
+  id           String   @id @default(uuid())
+  content      String
+  visibility   Visibility
+  createdById  String
+  boardId      String
+
+  createdBy    User     @relation(fields: [createdById], references: [id])
+  board        Board    @relation(fields: [boardId], references: [id])
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum Visibility {
+  ADMIN_ONLY
+  EVERYONE
+}
