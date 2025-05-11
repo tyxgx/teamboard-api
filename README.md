@@ -162,11 +162,3 @@ Feel free to **fork, open issues, or submit PRs**!
 
 ---
 
-### **📌 Note**  
-- **Postman Collection**: For API testing, import the Postman collection (if available).  
-- **Prisma Studio**: Run `npx prisma studio` to visualize the database.  
-
-🔗 **GitHub Repo**: [https://github.com/your-username/teamboard-api](https://github.com/your-username/teamboard-api)  
-
----
-
