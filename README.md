@@ -42,6 +42,7 @@
 🔗 **Base URL:** `https://teamboard-api.onrender.com`
 
 ### How to Use:
+
 1. `POST /api/auth/signup`
 2. `POST /api/auth/login` (returns token)
 3. Add `Authorization: Bearer <token>` to protected routes
@@ -220,3 +221,4 @@ npm run format   # Auto-formats code
 MIT License – Use freely, contribute gladly!
 
 ⸻
+```
