@@ -1,7 +1,8 @@
-import express, { Request, Response, NextFunction } from "express"; // ✅ added express type imports
+import express, { Request, Response, NextFunction } from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import fs from "fs";
+import { swaggerUi, swaggerSpec } from "./swagger";
 
 dotenv.config();
 
@@ -20,24 +21,24 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// ✅ Health check
 app.get("/", (req: Request, res: Response) => {
   res.send("TeamBoard API is running");
 });
 
+// ✅ Route registrations
 app.use("/api/auth", authRoutes);
 app.use("/api/boards", boardRoutes);
 app.use("/api/comments", commentRoutes);
 
-// 🛑 Error handling middleware
+// ✅ Swagger API docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+
+// 🛑 Global error handler
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   console.error("💥 Server Error:", err.stack);
   res.status(500).json({ message: "Something broke!" });
 });
 
-// ✅ MOVED this into a separate file like server.ts for tests
-// const PORT = process.env.PORT || 5001;
-// app.listen(PORT, () => {
-//   console.log(`🚀 Server running on http://localhost:${PORT}`);
-// });
-
-export default app; // ✅ Needed for Supertest
+// ✅ Server start moved to server.ts for testing purposes
+export default app;
