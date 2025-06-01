@@ -1,5 +1,8 @@
 # **TeamBoard API** 🚀  
 
+[![Swagger Docs](https://img.shields.io/badge/docs-openapi-blue?logo=swagger)](https://teamboard-api.onrender.com/api-docs)
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
 **A secure, role-based board and comment management system**  
 ✅ **Deployed on Render** (Cloud Hosting)  
 ✅ **Dockerized** (Containerized for easy deployment)  
