@@ -8,7 +8,9 @@
 ✅ **Deployed on Render** (Cloud Hosting)  
 ✅ **Dockerized** (Containerized for easy deployment)
 
-🔹  **Features:**
+---
+
+## 🔹 Features
 
 - ✅ **User Authentication** (Signup, Login with JWT)
 - ✅ **Role-Based Access Control (RBAC)** (Admin & Member roles)
@@ -17,6 +19,8 @@
 - ✅ **Swagger Docs** (Auto-generated API documentation)
 - ✅ **Docker Support** (Easy containerization)
 - ✅ **Render Deployment** (Live API access)
+- ✅ **CI with GitHub Actions** (build, migrate, seed, test)
+- ✅ **Prettier + ESLint** (code formatting & linting)
 
 ---
 
@@ -25,49 +29,35 @@
 1. [Live Deployment](#-live-deployment)
 2. [Docker Setup](#-docker-setup)
 3. [API Endpoints](#-api-endpoints)
-4. [Testing Guide](#-testing-guide-postman)
+4. [Testing Guide (Postman)](#-testing-guide-postman)
 5. [Local Development](#-local-development)
 6. [Database Schema](#-database-schema)
 7. [Swagger API Docs](#-swagger-api-docs)
+8. [Project Setup & Quality Tools](#-project-setup--quality-tools)
 
 ---
 
 ## **🌐 Live Deployment (Render)**
 
-The API is **hosted on Render** for public access:
-
 🔗 **Base URL:** `https://teamboard-api.onrender.com`
 
-### **How to Use the Deployed API?**
-
-1. **Signup** → `POST /api/auth/signup`
-2. **Login** → `POST /api/auth/login` (Get JWT)
-3. **Access Protected Routes** → Include `Authorization: Bearer <token>`
-
-Example:
-
-```bash
-curl -X POST https://teamboard-api.onrender.com/api/auth/signup \
-  -H "Content-Type: application/json" \
-  -d '{"name":"Test User","email":"test@example.com","password":"test123","role":"MEMBER"}'
-```
+### How to Use:
+1. `POST /api/auth/signup`
+2. `POST /api/auth/login` (returns token)
+3. Add `Authorization: Bearer <token>` to protected routes
 
 ---
 
 ## **🐳 Docker Setup**
 
-The project is Dockerized for easy deployment:
-
-### **1. Build & Run with Docker**
+### 1. Build & Run locally
 
 ```bash
 docker build -t teamboard-api .
-docker run -p 5000:5000 -e DATABASE_URL=postgresql://user:pass@db:5432/teamboard -e JWT_SECRET=your_jwt_secret teamboard-api
-```
+docker run -p 5000:5000 -e DATABASE_URL=... -e JWT_SECRET=... teamboard-api
 
-### **2. Docker Compose (PostgreSQL + API)**
+2. Docker Compose Setup
 
-```yaml
 version: '3.8'
 services:
   api:
@@ -91,95 +81,80 @@ services:
       - postgres_data:/var/lib/postgresql/data
 volumes:
   postgres_data:
-```
 
 Run:
 
-```bash
 docker-compose up
-```
 
----
 
-## **🔗 API Endpoints**
+⸻
 
-### **1️⃣ Authentication**
+🔗 API Endpoints
 
-| **Endpoint**       | **Method** | **Description**                    |
-| ------------------ | ---------- | ---------------------------------- |
-| `/api/auth/signup` | `POST`     | Register a new user (Admin/Member) |
-| `/api/auth/login`  | `POST`     | Login & get JWT token              |
+1️⃣ Authentication
 
-### **2️⃣ Board Management**
+Endpoint	Method	Description
+/api/auth/signup	POST	Register a new user
+/api/auth/login	POST	Login & receive a JWT token
 
-| **Endpoint**      | **Method** | **Description**               | **Access**     |
-| ----------------- | ---------- | ----------------------------- | -------------- |
-| `/api/boards`     | `POST`     | Create a board                | **Admin Only** |
-| `/api/boards`     | `GET`      | List boards (Admin sees all)  | Authenticated  |
-| `/api/boards/:id` | `GET`      | Get board + filtered comments | Authenticated  |
+2️⃣ Board Management
 
-### **3️⃣ Comment System**
+Endpoint	Method	Description	Access
+/api/boards	POST	Create board	Admin only
+/api/boards	GET	List all boards	Authenticated
+/api/boards/:id	GET	Get board with comments	Authenticated
 
-| **Endpoint**             | **Method** | **Description**                       |
-| ------------------------ | ---------- | ------------------------------------- |
-| `/api/comments`          | `POST`     | Add a comment (Admin-only visibility) |
-| `/api/comments/:boardId` | `GET`      | Get comments (filtered by visibility) |
+3️⃣ Comment System
 
----
+Endpoint	Method	Description
+/api/comments	POST	Add comment
+/api/comments/:boardId	GET	Get comments for a board
 
-## **🔍 Testing Guide (Postman)**
 
-### **🔐 Authentication**
+⸻
 
-1. **Signup**
-   ```bash
-   POST https://teamboard-api.onrender.com/api/auth/signup
-   Body: { "name": "Test User", "email": "test@example.com", "password": "test123", "role": "MEMBER" }
-   ```
-2. **Login**
-   ```bash
-   POST https://teamboard-api.onrender.com/api/auth/login
-   Body: { "email": "test@example.com", "password": "test123" }
-   Response: { "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
-   ```
+🔍 Testing Guide (Postman)
 
-### **📋 Boards & Comments**
+🔐 Authentication
 
-3. **Create Board (Admin Only)**
-   ```bash
-   POST https://teamboard-api.onrender.com/api/boards
-   Headers: { "Authorization": "Bearer <token>" }
-   Body: { "name": "Project Roadmap" }
-   ```
-4. **Add Comment**
-   ```bash
-   POST https://teamboard-api.onrender.com/api/comments
-   Headers: { "Authorization": "Bearer <token>" }
-   Body: { "content": "Hello!", "visibility": "EVERYONE", "boardId": "board-uuid" }
-   ```
+POST /api/auth/signup
+{
+  "name": "User",
+  "email": "test@example.com",
+  "password": "test123",
+  "role": "MEMBER"
+}
 
----
+POST /api/auth/login
+{
+  "email": "test@example.com",
+  "password": "test123"
+}
 
-## **💻 Local Development**
+📋 Boards & Comments
 
-1. **Install dependencies**
-   ```bash
-   npm install
-   ```
-2. **Set up PostgreSQL**
-   ```bash
-   npx prisma migrate dev
-   ```
-3. **Run the server**
-   ```bash
-   npm run dev
-   ```
+POST /api/boards
+Headers: Authorization: Bearer <token>
+Body: { "name": "Project X" }
 
----
+POST /api/comments
+Headers: Authorization: Bearer <token>
+Body: { "content": "Nice!", "visibility": "EVERYONE", "boardId": "<id>" }
 
-## **🗃 Database Schema**
 
-```prisma
+⸻
+
+💻 Local Development
+
+npm install
+npx prisma migrate dev
+npm run dev
+
+
+⸻
+
+🗃 Database Schema
+
 model User {
   id       String   @id @default(uuid())
   name     String
@@ -205,22 +180,45 @@ model Comment {
   createdBy    User     @relation(fields: [createdById], references: [id])
   board        Board    @relation(fields: [boardId], references: [id])
 }
-```
 
----
 
-## **📖 Swagger API Docs**
+⸻
 
-You can explore the API visually using Swagger UI:
+📖 Swagger API Docs
 
-🔗 **Swagger URL:** `https://teamboard-api.onrender.com/api-docs`
+🔗 https://teamboard-api.onrender.com/api-docs
+Try out every endpoint from your browser!
 
-Use this to try out endpoints directly in the browser and inspect request/response schemas.
+⸻
 
----
+✅ Project Setup & Quality Tools
 
-## **📜 License**
+🧪 Testing
+	•	Jest tests for all core modules (auth, boards, comments, RBAC)
+	•	Seeded test user: valid@example.com / test123
 
-MIT License - Free to use and modify.
+✅ ESLint + Prettier
+	•	ESLint with TypeScript rules
+	•	Run checks with:
 
-🚀 **Happy Coding!** 🚀
+npm run lint     # Highlights warnings
+npm run format   # Auto-formats code
+
+
+
+⚙️ GitHub Actions CI
+	•	Runs on each push to main
+	•	Pipeline:
+	•	✅ Install & build
+	•	✅ Prisma migrate + seed
+	•	✅ Run full test suite
+
+⸻
+
+📜 License
+
+MIT License – Use freely, contribute gladly!
+
+⸻
+
+🚀 Happy Building! 🚀
