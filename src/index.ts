@@ -7,7 +7,12 @@ import { swaggerUi, swaggerSpec } from "./swagger";
 dotenv.config();
 
 console.log("✅ JWT_SECRET loaded:", process.env.JWT_SECRET || "[undefined]");
-console.log("📄 Raw .env contents:\n", fs.readFileSync(".env", "utf8"));
+
+if (fs.existsSync(".env")) {
+  console.log("📄 Raw .env contents:\n", fs.readFileSync(".env", "utf8"));
+} else {
+  console.log("⚠️ .env file not found – likely running in production.");
+}
 
 if (!process.env.JWT_SECRET) {
   console.warn("⚠️ JWT_SECRET is not defined in .env file! Authentication will fail.");
