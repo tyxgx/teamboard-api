@@ -1,5 +1,5 @@
-import { Request, Response } from "express";
-import { PrismaClient } from "@prisma/client";
+import { Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
@@ -15,7 +15,7 @@ export const createBoard = async (req: Request, res: Response) => {
 
     res.status(201).json(board);
   } catch (error) {
-    res.status(500).json({ message: "Error creating board" });
+    res.status(500).json({ message: 'Error creating board' });
   }
 };
 
@@ -23,7 +23,7 @@ export const getBoards = async (req: Request, res: Response) => {
   try {
     // Admins can see all boards, members can only see boards they've commented on
     let boards;
-    if (req.user.role === "ADMIN") {
+    if (req.user.role === 'ADMIN') {
       boards = await prisma.board.findMany();
     } else {
       boards = await prisma.board.findMany({
@@ -39,7 +39,7 @@ export const getBoards = async (req: Request, res: Response) => {
 
     res.json(boards);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching boards" });
+    res.status(500).json({ message: 'Error fetching boards' });
   }
 };
 
@@ -53,12 +53,9 @@ export const getBoardById = async (req: Request, res: Response) => {
         comments: {
           where: {
             OR: [
-              { visibility: "EVERYONE" },
+              { visibility: 'EVERYONE' },
               {
-                AND: [
-                  { visibility: "ADMIN_ONLY" },
-                  { board: { adminId: req.user.id } },
-                ],
+                AND: [{ visibility: 'ADMIN_ONLY' }, { board: { adminId: req.user.id } }],
               },
               { createdById: req.user.id },
             ],
@@ -77,12 +74,12 @@ export const getBoardById = async (req: Request, res: Response) => {
     });
 
     if (!board) {
-      res.status(404).json({ message: "Board not found" });
+      res.status(404).json({ message: 'Board not found' });
       return;
     }
 
     res.json(board);
   } catch (error) {
-    res.status(500).json({ message: "Error fetching board" });
+    res.status(500).json({ message: 'Error fetching board' });
   }
 };

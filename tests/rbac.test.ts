@@ -1,4 +1,3 @@
-
 import request from 'supertest';
 import app from '../src/index';
 
@@ -15,12 +14,12 @@ describe('🔐 RBAC TESTS', () => {
       name: 'Member User',
       email: memberEmail,
       password: 'member123',
-      role: 'MEMBER'
+      role: 'MEMBER',
     });
 
     const memberLogin = await request(app).post('/api/auth/login').send({
       email: memberEmail,
-      password: 'member123'
+      password: 'member123',
     });
 
     memberToken = memberLogin.body.token;
@@ -30,12 +29,12 @@ describe('🔐 RBAC TESTS', () => {
       name: 'Admin User',
       email: adminEmail,
       password: 'admin123',
-      role: 'ADMIN'
+      role: 'ADMIN',
     });
 
     const adminLogin = await request(app).post('/api/auth/login').send({
       email: adminEmail,
-      password: 'admin123'
+      password: 'admin123',
     });
 
     adminToken = adminLogin.body.token;

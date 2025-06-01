@@ -19,12 +19,14 @@ beforeAll(async () => {
 
 describe('🔐 AUTH TESTS', () => {
   it('should signup a new user', async () => {
-    const res = await request(app).post('/api/auth/signup').send({
-      name: 'Test User',
-      email: `testuser${Date.now()}@example.com`, // ✅ Unique email
-      password: 'test123',
-      role: 'MEMBER',
-    });
+    const res = await request(app)
+      .post('/api/auth/signup')
+      .send({
+        name: 'Test User',
+        email: `testuser${Date.now()}@example.com`, // ✅ Unique email
+        password: 'test123',
+        role: 'MEMBER',
+      });
     expect(res.statusCode).toBe(201);
     expect(res.body).toHaveProperty('message');
   });

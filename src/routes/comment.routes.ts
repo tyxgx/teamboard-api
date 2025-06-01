@@ -1,11 +1,8 @@
-import express from "express";
-import {
-  createComment,
-  getComments,
-} from "../controllers/comment.controller";
-import { authenticate } from "../middlewares/auth.middleware";
-import { validate } from "../middlewares/validate";
-import { commentSchema } from "../validators/comment.schema";
+import express from 'express';
+import { createComment, getComments } from '../controllers/comment.controller';
+import { authenticate } from '../middlewares/auth.middleware';
+import { validate } from '../middlewares/validate';
+import { commentSchema } from '../validators/comment.schema';
 
 const router = express.Router();
 
@@ -46,7 +43,7 @@ const router = express.Router();
  *       401:
  *         description: Unauthorized
  */
-router.post("/", authenticate, validate(commentSchema), createComment);
+router.post('/', authenticate, validate(commentSchema), createComment);
 
 /**
  * @swagger
@@ -77,6 +74,6 @@ router.post("/", authenticate, validate(commentSchema), createComment);
  *       401:
  *         description: Unauthorized
  */
-router.get("/:boardId", authenticate, getComments);
+router.get('/:boardId', authenticate, getComments);
 
 export default router;

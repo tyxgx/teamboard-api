@@ -1,13 +1,9 @@
-import express from "express";
-import {
-  createBoard,
-  getBoards,
-  getBoardById,
-} from "../controllers/board.controller";
-import { validate } from "../middlewares/validate";
-import { boardSchema } from "../validators/board.schema";
-import { authenticate } from "../middlewares/auth.middleware";
-import { checkRole } from "../middlewares/rbac.middleware";
+import express from 'express';
+import { createBoard, getBoards, getBoardById } from '../controllers/board.controller';
+import { validate } from '../middlewares/validate';
+import { boardSchema } from '../validators/board.schema';
+import { authenticate } from '../middlewares/auth.middleware';
+import { checkRole } from '../middlewares/rbac.middleware';
 
 const router = express.Router();
 
@@ -39,7 +35,7 @@ const router = express.Router();
  *       403:
  *         description: Forbidden (RBAC)
  */
-router.post("/", authenticate, checkRole(["ADMIN"]), validate(boardSchema), createBoard);
+router.post('/', authenticate, checkRole(['ADMIN']), validate(boardSchema), createBoard);
 
 /**
  * @swagger
@@ -61,7 +57,7 @@ router.post("/", authenticate, checkRole(["ADMIN"]), validate(boardSchema), crea
  *       401:
  *         description: Unauthorized
  */
-router.get("/", authenticate, getBoards);
+router.get('/', authenticate, getBoards);
 
 /**
  * @swagger
@@ -93,6 +89,6 @@ router.get("/", authenticate, getBoards);
  *       404:
  *         description: Board not found
  */
-router.get("/:id", authenticate, getBoardById);
+router.get('/:id', authenticate, getBoardById);
 
 export default router;
