@@ -220,7 +220,3 @@ npm run format   # Auto-formats code
 MIT License – Use freely, contribute gladly!
 
 ⸻
-
-
-
-
