@@ -3,7 +3,7 @@
 [![Swagger Docs](https://img.shields.io/badge/docs-openapi-blue?logo=swagger)](https://teamboard-api.onrender.com/api-docs)
 [![CI](https://github.com/tyxgx/teamboard-api/actions/workflows/ci.yml/badge.svg)](https://github.com/tyxgx/teamboard-api/actions/workflows/ci.yml)
 [![Render Deployment](https://img.shields.io/badge/render-live-success?logo=render&label=render)](https://teamboard-api.onrender.com)
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
 **A secure, role-based board and comment management system**  
 ✅ **Deployed on Render** (Cloud Hosting)  
 ✅ **Dockerized** (Containerized for easy deployment)  
