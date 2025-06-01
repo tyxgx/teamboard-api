@@ -1,13 +1,25 @@
 import request from 'supertest';
+import bcrypt from 'bcryptjs';
 import app from '../src/index';
+import prisma from '../src/db/client.ts'; // ✅ import your Prisma client
 
 let token = '';
 
 beforeAll(async () => {
-  // Login and get fresh token before running validation tests
+  // 🧪 Ensure test user exists
+  await prisma.user.create({
+    data: {
+      name: 'Test Admin',
+      email: 'admin@example.com',
+      password: await bcrypt.hash('test123', 10),
+      role: 'ADMIN',
+    },
+  });
+
+  // 🔐 Login and get token
   const loginRes = await request(app).post('/api/auth/login').send({
-    email: 'valid@example.com',
-    password: 'test123'
+    email: 'admin@example.com',
+    password: 'test123',
   });
 
   token = `Bearer ${loginRes.body.token}`;
