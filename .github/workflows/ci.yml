@@ -30,24 +30,28 @@ jobs:
       JWT_SECRET: testingsecret
 
     steps:
-      - uses: actions/checkout@v3
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
+      - name: 🧱 Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 18
 
-      - name: Install dependencies
+      - name: 📦 Install dependencies
         run: npm install
 
-      - name: Generate Prisma client
+      - name: ⚙️ Generate Prisma client
         run: npx prisma generate
 
-      - name: Apply Prisma migrations
+      - name: 🗃️ Apply DB migrations
         run: npx prisma migrate deploy
 
-      - name: Run TypeScript build check
+      - name: 🌱 Seed test user
+        run: npx tsx tests/setup.ts
+
+      - name: 🧪 Run TypeScript build check
         run: npx tsc --noEmit
 
-      - name: Run tests
+      - name: ✅ Run tests
         run: npm test
