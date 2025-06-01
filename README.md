@@ -6,7 +6,7 @@
 ✅ **Deployed on Render** (Cloud Hosting)  
 ✅ **Dockerized** (Containerized for easy deployment)  
 
-🔹 **Features:**  
+🔹  **Features:**  
 - ✅ **User Authentication** (Signup, Login with JWT)  
 - ✅ **Role-Based Access Control (RBAC)** (Admin & Member roles)  
 - ✅ **Board & Comment Management**  
