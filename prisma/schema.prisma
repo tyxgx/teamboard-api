@@ -1,22 +1,20 @@
-// prisma/schema.prisma
-
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider      = "prisma-client-js"
-  binaryTargets = ["native", "darwin", "darwin-arm64"]
+  provider = "prisma-client-js"
 }
 
 model User {
-  id       String   @id @default(uuid())
-  name     String
-  email    String   @unique
-  password String
-  role     Role
-  comments Comment[]
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  image     String?      // optional profile picture
+  googleId  String?      // optional Google ID
+  role      Role
+  comments  Comment[]
 }
 
 model Board {

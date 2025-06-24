@@ -45,5 +45,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: 'Something broke!' });
 });
 
+import userRoutes from './routes/user.routes';
+app.use('/api/user', userRoutes); // 👈 ye line add karo
+
 // ✅ Server start moved to server.ts for testing purposes
 export default app;

@@ -27,14 +27,11 @@ const router = express.Router();
  *             properties:
  *               content:
  *                 type: string
- *                 example: This is a comment.
  *               visibility:
  *                 type: string
  *                 enum: [EVERYONE, ADMIN_ONLY]
  *               boardId:
  *                 type: string
- *                 format: uuid
- *                 example: a12b3c4d-5e6f-7g8h-9i0j-k1l2m3n4o5p6
  *     responses:
  *       201:
  *         description: Comment created
@@ -60,17 +57,9 @@ router.post('/', authenticate, validate(commentSchema), createComment);
  *         schema:
  *           type: string
  *           format: uuid
- *         description: Board ID to fetch comments for
  *     responses:
  *       200:
  *         description: List of comments
- *         content:
- *           application/json:
- *             example:
- *               - id: cmt-123
- *                 content: Looks good!
- *                 visibility: EVERYONE
- *                 boardId: abc-123
  *       401:
  *         description: Unauthorized
  */

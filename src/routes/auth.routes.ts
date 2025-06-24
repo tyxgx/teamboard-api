@@ -1,15 +1,14 @@
+// src/routes/auth.routes.ts
 import express from 'express';
-import { signup, login } from '../controllers/auth.controller';
-import { validate } from '../middlewares/validate';
-import { signupSchema, loginSchema } from '../validators/auth.schema';
+import { googleLogin } from '../controllers/auth.controller';
 
 const router = express.Router();
 
 /**
  * @swagger
- * /api/auth/signup:
+ * /api/auth/google:
  *   post:
- *     summary: Register a new user
+ *     summary: Login or signup with Google
  *     tags: [Auth]
  *     requestBody:
  *       required: true
@@ -18,54 +17,18 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             required:
- *               - name
- *               - email
- *               - password
- *               - role
+ *               - idToken
  *             properties:
- *               name:
+ *               idToken:
  *                 type: string
- *               email:
- *                 type: string
- *               password:
- *                 type: string
- *               role:
- *                 type: string
- *                 enum: [ADMIN, MEMBER]
- *     responses:
- *       201:
- *         description: User created successfully
- *       400:
- *         description: Validation error
- */
-router.post('/signup', validate(signupSchema), signup);
-
-/**
- * @swagger
- * /api/auth/login:
- *   post:
- *     summary: Login a user and get JWT
- *     tags: [Auth]
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - email
- *               - password
- *             properties:
- *               email:
- *                 type: string
- *               password:
- *                 type: string
+ *                 description: Google ID token
+ *                 example: ya29.a0AfH6SMD7...
  *     responses:
  *       200:
- *         description: Successful login
+ *         description: JWT and user data returned
  *       401:
- *         description: Invalid credentials
+ *         description: Invalid Google token
  */
-router.post('/login', validate(loginSchema), login);
+router.post('/google', googleLogin as unknown as express.RequestHandler);
 
 export default router;

@@ -48,12 +48,6 @@ router.post('/', authenticate, checkRole(['ADMIN']), validate(boardSchema), crea
  *     responses:
  *       200:
  *         description: List of boards
- *         content:
- *           application/json:
- *             example:
- *               - id: 1
- *                 name: Project Alpha
- *                 adminId: abc-123
  *       401:
  *         description: Unauthorized
  */
@@ -77,17 +71,10 @@ router.get('/', authenticate, getBoards);
  *     responses:
  *       200:
  *         description: Board with comments
- *         content:
- *           application/json:
- *             example:
- *               id: abc-123
- *               name: Project Alpha
- *               comments:
- *                 - id: cmt-001
- *                   content: Great work!
- *                   visibility: EVERYONE
  *       404:
  *         description: Board not found
+ *       401:
+ *         description: Unauthorized
  */
 router.get('/:id', authenticate, getBoardById);
 
