@@ -19,8 +19,9 @@ if (!process.env.JWT_SECRET) {
 }
 
 import authRoutes from './routes/auth.routes';
-import boardRoutes from './routes/board.routes';
+import boardRoutes from './routes/board.routes'; // ✅ Only once
 import commentRoutes from './routes/comment.routes';
+import userRoutes from './routes/user.routes';
 
 const app = express();
 app.use(cors());
@@ -35,6 +36,7 @@ app.get('/', (req: Request, res: Response) => {
 app.use('/api/auth', authRoutes);
 app.use('/api/boards', boardRoutes);
 app.use('/api/comments', commentRoutes);
+app.use('/api/user', userRoutes);
 
 // ✅ Swagger API docs
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
@@ -45,8 +47,4 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ message: 'Something broke!' });
 });
 
-import userRoutes from './routes/user.routes';
-app.use('/api/user', userRoutes); // 👈 ye line add karo
-
-// ✅ Server start moved to server.ts for testing purposes
 export default app;

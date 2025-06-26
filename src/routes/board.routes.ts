@@ -1,81 +1,18 @@
 import express from 'express';
-import { createBoard, getBoards, getBoardById } from '../controllers/board.controller';
-import { validate } from '../middlewares/validate';
-import { boardSchema } from '../validators/board.schema';
+import { createBoard, getBoards, getBoardById, joinBoard } from '../controllers/board.controller';
 import { authenticate } from '../middlewares/auth.middleware';
-import { checkRole } from '../middlewares/rbac.middleware';
 
 const router = express.Router();
 
-/**
- * @swagger
- * /api/boards:
- *   post:
- *     summary: Create a new board
- *     tags: [Boards]
- *     security:
- *       - bearerAuth: []
- *     requestBody:
- *       required: true
- *       content:
- *         application/json:
- *           schema:
- *             type: object
- *             required:
- *               - name
- *             properties:
- *               name:
- *                 type: string
- *                 example: Project Alpha
- *     responses:
- *       201:
- *         description: Board created
- *       401:
- *         description: Unauthorized
- *       403:
- *         description: Forbidden (RBAC)
- */
-router.post('/', authenticate, checkRole(['ADMIN']), validate(boardSchema), createBoard);
+// Create a new board (Only authenticated users can create, they become ADMIN by default)
+router.post('/', authenticate, createBoard);
 
-/**
- * @swagger
- * /api/boards:
- *   get:
- *     summary: Get all boards (Admin sees all)
- *     tags: [Boards]
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: List of boards
- *       401:
- *         description: Unauthorized
- */
+// Get all boards where user is a member
 router.get('/', authenticate, getBoards);
 
-/**
- * @swagger
- * /api/boards/{id}:
- *   get:
- *     summary: Get a specific board with comments
- *     tags: [Boards]
- *     security:
- *       - bearerAuth: []
- *     parameters:
- *       - in: path
- *         name: id
- *         required: true
- *         schema:
- *           type: string
- *         description: Board UUID
- *     responses:
- *       200:
- *         description: Board with comments
- *       404:
- *         description: Board not found
- *       401:
- *         description: Unauthorized
- */
+// Get a specific board with filtered comments
 router.get('/:id', authenticate, getBoardById);
+
+router.post('/join', authenticate, joinBoard);
 
 export default router;

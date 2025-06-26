@@ -8,31 +8,49 @@ generator client {
 }
 
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  image     String?      // optional profile picture
-  googleId  String?      // optional Google ID
-  role      Role
-  comments  Comment[]
+  id               String            @id @default(uuid())
+  name             String
+  email            String            @unique
+  image            String? // Optional profile picture
+  googleId         String? // Optional Google ID
+  role             String            @default("MEMBER")
+  comments         Comment[]
+  boardMemberships BoardMembership[]
+  createdBoards    Board[]           @relation("UserCreatedBoards")
 }
 
 model Board {
-  id       String    @id @default(uuid())
-  name     String
-  adminId  String
-  comments Comment[]
+  id            String            @id @default(uuid())
+  name          String
+  code          String            @unique // Unique invite code
+  createdAt     DateTime          @default(now())
+  createdBy     String
+  createdByUser User              @relation("UserCreatedBoards", fields: [createdBy], references: [id])
+  comments      Comment[]
+  members       BoardMembership[]
+}
+
+model BoardMembership {
+  id      String @id @default(uuid())
+  userId  String
+  boardId String
+  role    Role   @default(MEMBER)
+
+  user  User  @relation(fields: [userId], references: [id])
+  board Board @relation(fields: [boardId], references: [id])
+
+  @@unique([userId, boardId])
 }
 
 model Comment {
-  id           String   @id @default(uuid())
-  content      String
-  visibility   Visibility
-  createdById  String
-  boardId      String
+  id          String     @id @default(uuid())
+  content     String
+  visibility  Visibility
+  createdById String
+  boardId     String
 
-  createdBy    User     @relation(fields: [createdById], references: [id])
-  board        Board    @relation(fields: [boardId], references: [id])
+  createdBy User  @relation(fields: [createdById], references: [id])
+  board     Board @relation(fields: [boardId], references: [id])
 }
 
 enum Role {
